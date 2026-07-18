@@ -42,6 +42,9 @@ files, so a kit regression can't propagate unreviewed.
   distant maybe" posture for DISTRIBUTION only — public repo ≠ open-source
   project: no license file yet, no issues triage, no contribution promise.
   Those become decisions if a stranger ever actually shows up.
+- **2026-07-18** — MIT license added (Eric's ask, hours after going
+  public): full open posture on the grant. What remains deliberately
+  unpromised: issues triage, contribution review, any support expectation.
 
 ## Graveyard
 

@@ -7,10 +7,6 @@ Same same-commit maintenance rule as the atlas.
 
 ## Open — Unanswered
 
-- **[2026-07-18] No LICENSE file** — repo is public but unlicensed, which
-  legally means all-rights-reserved: people can read and copy by hand but
-  have no formal grant. Fine while the audience is wife-and-friends; add a
-  license (MIT?) if/when a stranger wants to use it. Eric's call.
 - **[2026-07-18] Contract-test template is untested as a template** — it's
   KQ's self-contained vitest file copied verbatim; first non-vitest host
   will reveal what actually needs adapting. Revisit at install #3.
@@ -21,6 +17,9 @@ Same same-commit maintenance rule as the atlas.
 
 ## Done
 
+- **2026-07-18** — MIT LICENSE added on Eric's ask, same day the repo went
+  public — closes the no-license loop; anyone now has a formal grant to
+  use/copy/modify.
 - **2026-07-18** — Repo born: extracted from DigiEric (origin) + KQ (second
   consumer, whose port proved what's portable) on Eric's go. Carries the
   convention template, the two hooks (sweep, update-check), three skills
