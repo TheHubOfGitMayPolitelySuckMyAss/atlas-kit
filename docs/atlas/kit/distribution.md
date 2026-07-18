@@ -36,6 +36,12 @@ files, so a kit regression can't propagate unreviewed.
 - **2026-07-18** — `ls-remote` over clone/fetch for the daily check: zero
   disk, zero working-tree risk, works with the keychain https creds already
   on the machine. (Born this commit.)
+- **2026-07-18** — Repo made PUBLIC on Eric's call ("I'm fine making it
+  public"), so anyone can install with one sentence and their daily check
+  needs no credentials. Softens the 7/15 "just for me, open-source is a
+  distant maybe" posture for DISTRIBUTION only — public repo ≠ open-source
+  project: no license file yet, no issues triage, no contribution promise.
+  Those become decisions if a stranger ever actually shows up.
 
 ## Graveyard
 
