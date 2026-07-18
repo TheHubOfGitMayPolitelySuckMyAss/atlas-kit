@@ -10,16 +10,14 @@ Same same-commit maintenance rule as the atlas.
 - **[2026-07-18] Contract-test template is untested as a template** — it's
   KQ's self-contained vitest file copied verbatim; first non-vitest host
   will reveal what actually needs adapting. Revisit at install #3.
-- **[2026-07-18] Private-repo auth assumption** — the update check and
-  /kit-update assume the host machine holds credentials for the origin
-  (keychain https or gh). True for all current installs (one owner, one
-  machine). Revisit if an install ever lives on a box without them.
 
 ## Done
 
 - **2026-07-18** — MIT LICENSE added on Eric's ask, same day the repo went
   public — closes the no-license loop; anyone now has a formal grant to
-  use/copy/modify.
+  use/copy/modify. Going public also closed the private-repo auth loop:
+  anonymous ls-remote works, so installs need no credentials for the origin
+  (reopen only if the origin ever goes private again).
 - **2026-07-18** — Repo born: extracted from DigiEric (origin) + KQ (second
   consumer, whose port proved what's portable) on Eric's go. Carries the
   convention template, the two hooks (sweep, update-check), three skills
