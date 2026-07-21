@@ -3,17 +3,22 @@
 # (Eric, 2026-07-16: "a doc updated 80% of the time is less useful than no
 # doc at all"). The hook owns the ASK; the agent keeps the judgment.
 #
-# Fires at most once per INTERVAL of activity, per repo, only in repos that
-# carry an atlas. exit 2 re-wakes the agent with the sweep checklist; the
-# debounce stamp prevents a refire on the post-sweep stop. First stop of a
-# fresh window initializes the stamp silently so sessions don't open with a
-# sweep of nothing.
+# Fires at most once per INTERVAL of activity, per repo PER SESSION, only in
+# repos that carry an atlas. exit 2 re-wakes the agent with the sweep
+# checklist; the debounce stamp prevents a refire on the post-sweep stop.
+# First stop of a fresh window initializes the stamp silently so sessions
+# don't open with a sweep of nothing.
+#
+# The stamp key includes the session id (from the hook's stdin JSON): a
+# repo-only key made concurrent sessions share one cooldown, so whichever
+# session swept first muted the others for 45m and their work went unreviewed.
 
 ROOT="${CLAUDE_PROJECT_DIR:-.}"
 [ -d "$ROOT/docs/atlas" ] || exit 0
 
 INTERVAL_S=$((45 * 60))
-KEY=$(echo "$ROOT" | md5 -q 2>/dev/null || echo "$ROOT" | md5sum | cut -d' ' -f1)
+SID=$(cat 2>/dev/null | sed -n 's/.*"session_id"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' | head -1)
+KEY=$(echo "$ROOT|${SID:-nosession}" | md5 -q 2>/dev/null || echo "$ROOT|${SID:-nosession}" | md5sum | cut -d' ' -f1)
 STATE="/tmp/claude-atlas-sweep-$KEY"
 
 now=$(date +%s)
