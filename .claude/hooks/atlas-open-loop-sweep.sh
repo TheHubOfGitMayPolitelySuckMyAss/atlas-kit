@@ -32,9 +32,9 @@ echo "$now" > "$STATE"
 
 cat >&2 <<'MSG'
 ATLAS SWEEP (debounced ~45m): before ending, review the conversation since the last sweep:
-1. OPEN LOOPS — decisions pending on the owner, questions he must answer, ideas raised and dropped: file each to atlas_notes (source='extracted') on the right node; initiative-level items also go to docs/docket.md "Open — Unanswered".
+1. OPEN LOOPS — decisions pending on the owner, questions he must answer, ideas raised and dropped: file each to ONE store — feature-anchored to the node's inbox (source='extracted'), cross-cutting/initiative-level to docs/docket.md "Open — Unanswered" INSTEAD. Never both; never restate docket status in a note.
 2. DECISIONS MADE — anything ruled this session that changed a feature: confirm the owning node's Decisions got its append (same-commit rule).
-3. TODOS RESOLVED — anything shipped or settled: mark the atlas_notes row done and promote the durable residue into the node.
+3. TODOS TRIAGE — QUERY the full open-notes list (adapter, not memory) and disposition every note on a node touched since the last sweep plus every note near/past the freshness budget: resolve (done/good_as_is, residue promoted to the node) or re-affirm against current evidence and bump verified_at.
 If nothing needs filing, continue with one line: "Atlas sweep: clear."
 MSG
 exit 2

@@ -43,16 +43,29 @@ The lock is released in step 5, alongside the debounce stamp.
 ## 1. Atlas sweep (same checklist the hook fires)
 
 - **Open loops** — decisions pending on the owner, questions he must answer,
-  ideas raised and dropped: file each to the node's todo inbox as
-  source='extracted' — the Todos section of `docs/atlas/README.md` names the
-  host's adapter (here an `atlas_notes` table; SQL insert via the Supabase
-  MCP). A repo with no inbox files open loops to the docket instead.
-  Initiative-level items also go to `docs/docket.md` "Open — Unanswered".
+  ideas raised and dropped: file each to ONE store, never both.
+  Feature-anchored → the node's todo inbox as source='extracted' (the Todos
+  section of `docs/atlas/README.md` names the host's adapter). A repo with
+  no inbox files open loops to the docket instead. Cross-cutting or
+  initiative-level → the docket "Open — Unanswered" INSTEAD, with at most a
+  pointer from the note side; a note that restates a docket entry's status
+  is the N-writers disease the docket rules exist to kill, and the notes
+  contract test hunts "also in docket" phrasing.
 - **Decisions made** — anything ruled this session that changed a feature:
   confirm the owning node's Decisions got its append (same-commit rule); a
   reframe of Why/What is a decision too (convention rule 5).
-- **Todos resolved** — anything shipped or settled: mark the `atlas_notes`
-  row done and promote the durable residue into the node.
+- **Todos triage** — LIST-DRIVEN, never memory-scoped: QUERY the full open
+  list via the adapter and disposition every note that (a) anchors to a node
+  whose feature was touched since the last sweep, or (b) is near or past the
+  freshness budget (README Todos section; check `verified_at`). Disposition
+  = resolve (`done` if acted on — promote the durable residue into the node;
+  `good_as_is` if reviewed and nothing owed) or re-affirm against CURRENT
+  evidence — read the code/doc the note makes claims about, then bump
+  `verified_at`. Never re-affirm from memory: the session that ships a
+  note's subject is usually not the one that filed it, and only the queried
+  list catches those. The receipt carries the count line:
+  "todos: N→M open (X resolved, Y re-affirmed, Z filed)". An over-budget
+  list blocks the safe-to-close verdict exactly like a red docket.
 
 ## 2. Docket handoff — fold, prune, then update
 

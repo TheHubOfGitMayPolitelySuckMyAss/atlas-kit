@@ -119,8 +119,31 @@ decisions, not truths** — so unlike everything else in the atlas they belong i
 a mutable inbox behind an adapter, not in these files. When a todo is acted on,
 the durable residue is promoted into the node's Decisions/Graveyard in the same
 commit; resolved rows are just the receipt trail. Cross-cutting open questions
-still go to `docs/docket.md` (Open — Unanswered) — node todos are for thoughts
-anchored to one feature.
+go to `docs/docket.md` (Open — Unanswered) INSTEAD — node todos are for
+thoughts anchored to one feature, and a fact has one writer.
+
+The inbox is STATE, not a log, and it rots the same way a docket does —
+learned when a 4-day-old install was found holding 41 open notes and zero
+resolutions: write pressure without resolve pressure turns the inbox into a
+midden. Three rules, each with an enforcement point:
+
+1. **Freshness contract.** Every open note carries a `verified_at` stamp
+   (set on file, bumped on re-affirmation). An open note is a claim that
+   re-earns its place: within the freshness budget (default 14 days; hosts
+   shipping daily want ~7) it must be resolved (`done` / `good_as_is`) or
+   re-affirmed against CURRENT evidence — query the code/docs, not memory.
+   Enforced by the notes contract test (`templates/notes-contract.test.ts`),
+   which skips only where the inbox is unreachable.
+2. **List-driven triage.** Resolution is never memory-scoped. The sweep
+   (hook ask + `/sweep`) QUERIES the open list and dispositions every note
+   anchored to a node touched since the last sweep, plus every note near or
+   past budget — the session that ships a note's subject is usually not the
+   session that filed it.
+3. **No double-filing.** A node note may point at a docket entry but never
+   restate its status ("also in docket" is the N-writers disease, and the
+   contract test hunts the phrase). Corollary to the same-commit rule: a
+   commit that updates a node's Decisions/Graveyard dispositions that node's
+   open notes in the same session.
 
 ## The kit — what "installing the atlas" means
 
@@ -150,7 +173,10 @@ ask for the kit:
    `templates/atlas-contract.test.ts`, adapt to the host's runner).
 9. Host-specific and optional: a renderer and a todos capture inbox behind
    an adapter (Todos section above). A repo can run with neither — open
-   loops go to the docket until an inbox exists.
+   loops go to the docket until an inbox exists. A repo that HAS an inbox
+   also seeds the notes contract test (from
+   `templates/notes-contract.test.ts`) — an inbox without its freshness
+   tripwire is how 41-note middens happen.
 
 Hooks and skills are byte-identical across installs by design; what localizes
 is this README's marked sections, the contract test's runner, and the

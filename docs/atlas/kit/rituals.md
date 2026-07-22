@@ -11,8 +11,11 @@ Three rituals, one pattern — deterministic trigger, agent judgment:
 
 - **Sweep** (`hooks/atlas-open-loop-sweep.sh`, Stop hook, debounced
   `INTERVAL_S`=45m per repo): blocks the agent's stop with exit 2 and feeds
-  it the checklist — file open loops, confirm same-commit Decisions appends,
-  resolve todos. Fires only in repos carrying `docs/atlas`. `/sweep`
+  it the checklist — file open loops (to ONE store: node inbox or docket,
+  never both), confirm same-commit Decisions appends, and triage todos
+  LIST-DRIVEN: query the full open-notes list, disposition every note on a
+  touched node or near/past the freshness budget (resolve, or re-affirm and
+  bump `verified_at`). Fires only in repos carrying `docs/atlas`. `/sweep`
   (skill) is the on-demand superset for session close: atlas sweep + docket
   handoff + memory + repo state, with a per-repo lock so two sessions can't
   sweep the same checkout at once.
@@ -41,6 +44,16 @@ Three rituals, one pattern — deterministic trigger, agent judgment:
   (matches the hook). Forced by the KQ docket rotting to 780 lines under N
   worktree writers — Eric: worktrees are antithetical to a single global
   state file, so make it not one. (KQ session 2026-07-22)
+
+- **2026-07-22** — Todos inbox given the docket treatment: freshness
+  contract (`verified_at` + budget, default 14d), list-driven triage in the
+  sweep (query the open list; "anything shipped this session" phrasing
+  banned — it only ever resolves what the current session remembers), and a
+  no-double-filing rule (docket is the single writer for cross-cutting
+  items; "also in docket" notes fail the new
+  `templates/notes-contract.test.ts`). Forced by the KQ inbox reaching 41
+  open notes / 0 resolutions in 4 days — 26 of the 41 were already shipped,
+  superseded, or docket dups when audited. (KQ session 2026-07-22)
 
 ## Graveyard
 
