@@ -104,6 +104,15 @@ sneaks in — trim to the principle or date the quote.
    host's decision docs here, if any -->; nodes carry the feature-scoped
    decisions citing them and link them for archaeology; never duplicate
    wholesale.
+8. **Provenance receipts.** Any owner-attribution — a tag like "(Owner)" /
+   "(Owner, 7/19: …)" or prose like "Owner ruled …" — is inadmissible without
+   a receipt IN THE SAME bullet: the owner's verbatim words in quotes plus a
+   date. The quote must be greppable in session transcripts; that is the
+   receipt. Paraphrase wears the owner's name only with their words beside
+   it. Enforced by the provenance-receipts block in the atlas contract test
+   (set `OWNER_NAME` per install). Born 2026-07-22 in the KQ repo: a 7/20
+   audit found 3 of 17 owner-attributions had no receipt — one doctrine the
+   owner never stated wore his name for days.
 
 The open work docket is the atlas's sibling: `docs/docket.md` — three states
 (In Flight / Open–Unanswered / Done), same same-commit maintenance rule, plus

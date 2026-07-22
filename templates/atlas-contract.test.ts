@@ -113,3 +113,73 @@ describe("atlas contract", () => {
     expect(/^## Done\s*$/m.test(raw), "docket: missing '## Done'").toBe(true);
   });
 });
+
+// ---------------------------------------------------------------------------
+// Provenance receipts (maintenance contract rule 8). Any block attributing a
+// ruling to the owner — a parenthetical tag ("(Owner)", "(Owner, 7/19: …)",
+// "(§31, Owner)") or ruling-verb prose ("Owner ruled/confirmed …") — must
+// carry the receipt IN THE SAME bullet/paragraph: the owner's verbatim words
+// in quotes AND a date. The quote is greppable in session transcripts; that
+// is the receipt. Possessives ("Owner's …") and prepositional objects
+// ("replied to Owner") are not attributions and are exempt.
+// Born 2026-07-22 (KQ): a 7/20 audit found 3/17 owner-attributions had no
+// receipt — one doctrine the owner never stated wore his name for days.
+
+const OWNER_NAME = "Eric"; // LOCALIZE: the human owner's first name
+
+const ATTRIB_TAG = new RegExp(
+  `\\((?:${OWNER_NAME}\\b(?!['’]s)|[^()]*,\\s*${OWNER_NAME}\\b(?!['’]s))[^()]*\\)`
+);
+const ATTRIB_VERB = new RegExp(
+  `\\b${OWNER_NAME}(?:\\s+then)?\\s+(?:ruled|confirmed|commissioned|blessed|ordered|selected|chose|killed|halted|deferred|punted|ratified)\\b`,
+  "i"
+);
+const RECEIPT_QUOTE = /["“][^"”]{2,}["”]/;
+const RECEIPT_DATE = /\b\d{4}-\d{2}-\d{2}\b|\b\d{1,2}\/\d{1,2}\b/;
+
+function receiptViolations(raw: string): { line: number; excerpt: string }[] {
+  const out: { line: number; excerpt: string }[] = [];
+  const lines = raw.split(/\r?\n/);
+  let buf: string[] = [];
+  let bufStart = 0;
+  const flush = () => {
+    if (!buf.length) return;
+    const text = buf.join("\n");
+    if (
+      (ATTRIB_TAG.test(text) || ATTRIB_VERB.test(text)) &&
+      !(RECEIPT_QUOTE.test(text) && RECEIPT_DATE.test(text))
+    ) {
+      out.push({
+        line: bufStart + 1,
+        excerpt: text.trim().replace(/\s+/g, " ").slice(0, 110),
+      });
+    }
+    buf = [];
+  };
+  lines.forEach((l, i) => {
+    if (!l.trim()) {
+      flush();
+      return;
+    }
+    if (/^\s*- /.test(l)) flush(); // each bullet carries its own receipt
+    if (!buf.length) bufStart = i;
+    buf.push(l);
+  });
+  flush();
+  return out;
+}
+
+describe("provenance receipts", () => {
+  // README included on purpose: convention prose makes claims too.
+  for (const file of walkMarkdown(ATLAS_DIR)) {
+    const rel = path.relative(ROOT, file);
+    it(`${rel}: every ${OWNER_NAME}-attribution carries a receipt (verbatim quote + date)`, () => {
+      const v = receiptViolations(readFileSync(file, "utf8"));
+      expect(
+        v.length,
+        `${rel}: attribution without receipt —\n` +
+          v.map((x) => `  L${x.line}: ${x.excerpt}`).join("\n")
+      ).toBe(0);
+    });
+  }
+});
