@@ -22,6 +22,8 @@ installed SHA is too old for the shallow history, deepen or note it).
 **Byte-identical (copy verbatim, then diff to confirm what changed):**
 - `.claude/hooks/atlas-open-loop-sweep.sh`
 - `.claude/hooks/atlas-kit-update-check.sh`
+- `.claude/hooks/docket-single-writer.sh` (+ its PreToolUse Edit|Write entry
+  in `.claude/settings.json` — merge rule below)
 - `.claude/skills/sweep/SKILL.md`
 - `.claude/skills/rebrief/SKILL.md`
 - `.claude/skills/kit-update/SKILL.md` (this file — yes, it updates itself)

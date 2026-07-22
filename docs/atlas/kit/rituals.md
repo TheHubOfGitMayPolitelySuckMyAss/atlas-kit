@@ -32,6 +32,15 @@ Three rituals, one pattern — deterministic trigger, agent judgment:
 - **2026-07-18** — `/rebrief` built on Eric's confirmed felt need; hard
   format contract (one screen, first move first) IS the feature. (DigiEric
   56563f9)
+- **2026-07-22** — Docket declared single-writer (default branch only,
+  `hooks/docket-single-writer.sh` PreToolUse guard; branch sessions file
+  `docs/docket-inbox/` notes) and its format machine-enforced
+  (`templates/docket-contract.test.ts`: ask-first entries, ≤12 lines,
+  done-stamps in open entries fail CI). Sweep's docket step gained
+  fold-inbox + prune; step-5 debounce stamp fixed to the repo+session key
+  (matches the hook). Forced by the KQ docket rotting to 780 lines under N
+  worktree writers — Eric: worktrees are antithetical to a single global
+  state file, so make it not one. (KQ session 2026-07-22)
 
 ## Graveyard
 

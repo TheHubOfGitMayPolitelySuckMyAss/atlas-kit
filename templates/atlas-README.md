@@ -106,7 +106,25 @@ sneaks in — trim to the principle or date the quote.
    wholesale.
 
 The open work docket is the atlas's sibling: `docs/docket.md` — three states
-(In Flight / Open–Unanswered / Done), same same-commit maintenance rule.
+(In Flight / Open–Unanswered / Done), same same-commit maintenance rule, plus
+four rules of its own (it is STATE, not a log — learned when a docket rotted
+to 780 lines of shipped-but-still-In-Flight entries):
+
+1. **Single-writer.** Edited on the default branch only, enforced by the
+   `docket-single-writer.sh` PreToolUse hook. Branch/worktree sessions file
+   one-note-per-file updates in `docs/docket-inbox/` (conflict-free by
+   construction); the session that merges folds the inbox and deletes the
+   notes (sweep skill, docket step).
+2. **Ask-first entries.** Every In Flight / Open entry's first line is
+   `**ON <OWNER>:**` / `**ON AGENT:**` / `**BLOCKED:**` + a one-line ask;
+   owner entries sort first — the owner's queue is the top of the page.
+3. **Short entries.** ≤12 lines open / ≤10 done; history is pointers
+   (decision doc §, atlas node, commit sha), never inline prose.
+4. **Done things MOVE.** A state change relocates the entry to Done as a
+   one-liner — a SHIPPED/RESOLVED stamp left on an open entry fails CI.
+
+All four are enforced by the docket contract test (seed from
+`templates/docket-contract.test.ts`, sibling of the atlas contract test).
 
 ## Todos — the capture inbox (pluggable)
 
@@ -134,7 +152,11 @@ kit:
 1. `docs/atlas/README.md` — this convention (instantiated from
    `templates/atlas-README.md`; LOCALIZE-marked sections adapted). The only
    required reading.
-2. `docs/docket.md` — seeded with the three empty states.
+2. `docs/docket.md` — seeded with the three empty states (from
+   `templates/docket.md`, which carries the four docket rules), plus
+   `.claude/hooks/docket-single-writer.sh` + its PreToolUse entry in
+   `.claude/settings.json` (the single-writer guard) and a docket contract
+   test (seed from `templates/docket-contract.test.ts`).
 3. `.claude/hooks/atlas-open-loop-sweep.sh` + its Stop entry in
    `.claude/settings.json` — the debounced periodic sweep ask.
 4. `.claude/skills/sweep/SKILL.md` — `/sweep`, the on-demand session-close

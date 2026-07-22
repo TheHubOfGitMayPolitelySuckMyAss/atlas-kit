@@ -54,15 +54,29 @@ The lock is released in step 5, alongside the debounce stamp.
 - **Todos resolved** — anything shipped or settled: mark the `atlas_notes`
   row done and promote the durable residue into the node.
 
-## 2. Docket handoff
+## 2. Docket handoff — fold, prune, then update
 
-- Every **In Flight** item touched this session reflects its CURRENT state
-  and concrete next step.
-- Work that is genuinely mid-task gets a handoff note on its docket item:
-  where it stands, what's next, and any live reasoning a fresh session could
-  not reconstruct from files (why we're mid-way into an odd approach, what
-  was already tried). External state the repo can't confirm gets the
-  ⚠unverified tag.
+The docket is SINGLE-WRITER: `docs/docket.md` is edited on the default branch
+only (hook-enforced). On a branch/worktree, every docket-shaped update below
+becomes a note file in `docs/docket-inbox/<slug>.md` instead — one note per
+item: the item, its new state, its ask line, pointers.
+
+On the default branch, in order:
+
+- **Fold the inbox** — apply each `docs/docket-inbox/*.md` note to the
+  docket, then delete the note. The inbox must be empty after a sweep.
+- **Prune** — any entry whose work shipped/settled this session MOVES to
+  Done as a one-liner (never a SHIPPED stamp left in place); surviving
+  entries keep their `**ON <owner>:**` / `**ON AGENT:**` / `**BLOCKED:**`
+  first line current, ≤12 lines, history as pointers.
+- **Update** — every In Flight item touched this session reflects its
+  CURRENT state and concrete next step. Genuinely mid-task work gets a
+  handoff note on its item: where it stands, what's next, any live reasoning
+  a fresh session could not reconstruct from files. External state the repo
+  can't confirm gets the ⚠unverified tag.
+- **Run the docket contract test** (if the host has one — seeded from
+  `templates/docket-contract.test.ts`). A red docket blocks the safe-to-close
+  verdict exactly like an unfiled item.
 
 ## 3. Memory
 
@@ -96,9 +110,13 @@ Reset the hook's debounce stamp and release the sweep lock:
 
 ```bash
 ROOT="${CLAUDE_PROJECT_DIR:-$(git rev-parse --show-toplevel)}"
-KEY=$(echo "$ROOT" | md5 -q 2>/dev/null || echo "$ROOT" | md5sum | cut -d' ' -f1)
-date +%s > "/tmp/claude-atlas-sweep-$KEY"      # debounce stamp
-rm -f "/tmp/claude-atlas-sweep-lock-$KEY"      # release the lock (step 0)
+# Debounce stamp is keyed per repo + SESSION (matches the hook); the lock
+# stays repo-only (step 0) — do not conflate the two keys.
+SID="${CLAUDE_CODE_SESSION_ID:-nosession}"
+STAMPKEY=$(echo "$ROOT|$SID" | md5 -q 2>/dev/null || echo "$ROOT|$SID" | md5sum | cut -d' ' -f1)
+LOCKKEY=$(echo "$ROOT" | md5 -q 2>/dev/null || echo "$ROOT" | md5sum | cut -d' ' -f1)
+date +%s > "/tmp/claude-atlas-sweep-$STAMPKEY"   # debounce stamp
+rm -f "/tmp/claude-atlas-sweep-lock-$LOCKKEY"    # release the lock (step 0)
 ```
 
 Close with a one-screen receipt: what was filed where (or "clear" per layer),

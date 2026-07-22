@@ -16,7 +16,7 @@ installed/updated}`. Three moving parts:
   origin repo itself carries no stamp). On drift it emits one context line:
   "kit update available, run /kit-update".
 - **Apply** (`skills/kit-update`): shallow-clone origin to scratch, copy
-  the portable files byte-identical (both hooks, three skills — including
+  the portable files byte-identical (three hooks, three skills — including
   itself), reconcile localized files by judgment (host atlas README,
   settings.json merges), advance the stamp, one explicit-paths commit.
 - **Contribute back**: a local improvement to a portable file goes to the
