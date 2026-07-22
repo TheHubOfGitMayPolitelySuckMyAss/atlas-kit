@@ -17,7 +17,7 @@ the origin to the scratchpad (`git clone --depth 50 <origin> <scratch>/atlas-kit
 then read the changelog: `git log --oneline <installed-sha>..HEAD` (if the
 installed SHA is too old for the shallow history, deepen or note it).
 
-## 2. Apply — two classes of file, two rules
+## 2. Apply — three classes of file, three rules
 
 **Byte-identical (copy verbatim, then diff to confirm what changed):**
 - `.claude/hooks/atlas-open-loop-sweep.sh`
@@ -28,6 +28,20 @@ installed SHA is too old for the shallow history, deepen or note it).
 - `.claude/skills/rebrief/SKILL.md`
 - `.claude/skills/kit-update/SKILL.md` (this file — yes, it updates itself)
 
+**Contract tests (reviewed-merge on update — added v5; before this, test
+rules silently never reached existing installs):**
+- `templates/atlas-contract.test.ts`, `templates/docket-contract.test.ts`,
+  `templates/notes-contract.test.ts` → the host's test dir (whatever the
+  host named them). Port new/changed RULES into the host's copy; preserve
+  host localizations (`OWNER_NAME`, paths, LOCALIZE-marked blocks, rules
+  the host added). If the host lacks a copy, install it and localize.
+- A newly ported rule that goes RED on existing host content is the rule
+  working: fix the content in the same update (that is the point of
+  enforcement), or — only if a fix needs the owner — commit the content
+  fixes you can make and file the remainder where the host tracks open
+  work, named in the update report. Never skip or weaken the rule to get
+  to green.
+
 **Localized (never overwrite; reconcile by judgment):**
 - `docs/atlas/README.md` — if the origin's `templates/atlas-README.md`
   changed the CONVENTION (node format, maintenance rules, kit list), port
@@ -35,7 +49,8 @@ installed SHA is too old for the shallow history, deepen or note it).
   parts (Todos adapter, renderer notes, deep-dive doc links).
 - `.claude/settings.json` — only touch if the kit added/changed a hook
   entry; merge, never replace (hosts carry their own unrelated hooks).
-- Templates (`templates/*`) are install-time seeds — ignore on update.
+- Remaining templates (`templates/docket.md`, `templates/atlas-README.md`
+  as a file) are install-time seeds — ignore on update.
 
 ## 3. Stamp, commit, report
 
