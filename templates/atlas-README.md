@@ -143,9 +143,11 @@ still go to `docs/docket.md` (Open — Unanswered) — node todos are for though
 anchored to one feature.
 
 The inbox is STATE, not a log, and it rots the same way a docket does —
-learned when a 4-day-old install was found holding 41 open notes and zero
-resolutions: write pressure without resolve pressure turns the inbox into a
-midden. Three rules, each with an enforcement point:
+learned when a 4-day-old install was found holding 41 open notes, 26 of them
+already shipped, superseded, or docket dups — its ad-hoc resolutions never
+queried the list and couldn't keep pace: write pressure without list-driven
+resolve pressure turns the inbox into a midden. Three rules, each with an
+enforcement point:
 
 1. **Freshness contract.** Every open note carries a `verified_at` stamp
    (set on file, bumped on re-affirmation). An open note is a claim that

@@ -52,8 +52,9 @@ Three rituals, one pattern — deterministic trigger, agent judgment:
   no-double-filing rule (docket is the single writer for cross-cutting
   items; "also in docket" notes fail the new
   `templates/notes-contract.test.ts`). Forced by the KQ inbox reaching 41
-  open notes / 0 resolutions in 4 days — 26 of the 41 were already shipped,
-  superseded, or docket dups when audited. (KQ session 2026-07-22)
+  open notes in 4 days — 26 of the 41 already shipped, superseded, or
+  docket dups when audited; the ~15 ad-hoc resolutions that did happen
+  never queried the list and couldn't keep pace. (KQ session 2026-07-22)
 
 ## Graveyard
 

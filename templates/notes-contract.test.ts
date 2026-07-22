@@ -5,7 +5,8 @@ import { describe, expect, it } from "vitest";
 // re-earns its place — within the freshness budget it is resolved or
 // re-affirmed against current evidence (verified_at bumped). Without this
 // tripwire, write pressure alone turns the inbox into a midden (the founding
-// incident: 41 open notes, zero ever resolved, 4 days after install).
+// incident: 41 open notes 4 days after install, 26 of them rot — ad-hoc
+// resolution never queried the list and couldn't keep pace).
 //
 // Install note: seed from templates/notes-contract.test.ts. LOCALIZE two
 // things: fetchOpenNotes() for the host's adapter, and BUDGET_DAYS (default
