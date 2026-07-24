@@ -7,9 +7,16 @@ Same same-commit maintenance rule as the atlas.
 
 ## Open — Unanswered
 
-- **[2026-07-18] Contract-test template is untested as a template** — it's
-  KQ's self-contained vitest file copied verbatim; first non-vitest host
-  will reveal what actually needs adapting. Revisit at install #3.
+- **ON ERIC:** should kit updates ask you before applying, or stay
+  silent-but-committed? [2026-07-23] Raised when Eric noticed he has never
+  seen the "run /kit-update" nudge — the SessionStart notice targets the
+  agent, which applies updates mid-session; the audit surface is the
+  `chore(atlas-kit)` commit trail. Working fine in practice (v2→v6 all
+  landed), so status quo holds until ruled. If "ask first": one-line change
+  to the hook's nudge text.
+- **ON AGENT:** revisit contract-test template portability at install #3.
+  [2026-07-18] It's KQ's self-contained vitest file copied verbatim; first
+  non-vitest host will reveal what actually needs adapting.
 
 ## Done
 
