@@ -137,10 +137,15 @@ All four are enforced by the docket contract test (seed from
 
 ## Todos — the capture inbox (pluggable)
 
-<!-- LOCALIZE: name this host's adapter. Known adapters: a DB table behind a
-     lib module (DigiEric: atlas_notes via apps/web/lib/atlas-notes.ts; KQ:
-     atlas_notes via lib/atlas/notes.ts). A repo with NO inbox files open
-     loops to the docket instead — that is a valid configuration. -->
+**The storage contract is pinned, not remembered.** A repo that runs an inbox
+carries `docs/atlas/notes-adapter.md` (seed from `templates/notes-adapter.md`):
+store, columns, the canonical open-notes query, the connection route, write
+routes, freshness budget. Every sweep reads that file and runs the pinned
+query verbatim — plumbing is never re-derived, so a sweep runs cold in ~2
+minutes. When the schema moves, the contract file moves in the same commit.
+A repo with NO inbox simply has no `notes-adapter.md` — its absence is the
+signal (checked by the sweep hook), and open loops go to the docket instead;
+that is a valid configuration.
 
 The convention reserves a mutable **Todos** queue per node: raw thoughts and
 open loops, source-tagged (`manual` vs `extracted`), that are **larval
@@ -169,10 +174,11 @@ enforcement point:
    it skips only where the host's inbox is unreachable (e.g. credential-less
    CI) — local runs are the tripwire.
 2. **List-driven triage.** Resolution is never memory-scoped. The sweep
-   (hook ask + `/sweep` skill) QUERIES the open list and dispositions every
-   note anchored to a node touched since the last sweep, plus every note
-   near or past budget. "Anything shipped this session" is banned phrasing —
-   the session that ships a note's subject is usually not the session that
+   (hook ask + `/sweep` skill) QUERIES the open list — via the query pinned
+   in `notes-adapter.md`, never re-derived — and dispositions every note
+   anchored to a node touched since the last sweep, plus every note near or
+   past budget. "Anything shipped this session" is banned phrasing — the
+   session that ships a note's subject is usually not the session that
    filed it.
 3. **No double-filing.** A fact has one writer. Cross-cutting/initiative
    items live in the docket ONLY; a node note may point at a docket entry
@@ -216,9 +222,12 @@ kit:
 9. Host-specific and optional: a renderer and a todos capture inbox behind
    an adapter (Todos section above). A repo can run with neither — open
    loops go to the docket until an inbox exists. A repo that HAS an inbox
-   also seeds the notes contract test (from
+   also seeds BOTH `docs/atlas/notes-adapter.md` (from
+   `templates/notes-adapter.md` — the pinned storage contract every sweep
+   queries by) and the notes contract test (from
    `templates/notes-contract.test.ts`) — an inbox without its freshness
-   tripwire is how 41-note middens happen.
+   tripwire is how 41-note middens happen, and one without its pinned
+   contract taxes every sweep with re-derived plumbing.
 
 Hooks and skills are byte-identical across installs by design; what localizes
 is this README's marked sections, the contract test's runner, and the

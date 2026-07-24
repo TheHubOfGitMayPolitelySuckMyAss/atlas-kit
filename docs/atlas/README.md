@@ -109,9 +109,17 @@ The open work docket is the atlas's sibling: `docs/docket.md` — three states
 
 ## Todos — the capture inbox (pluggable)
 
-**This repo runs with NO inbox** — open loops go straight to
-`docs/docket.md`. (Known adapters elsewhere: DigiEric's `atlas_notes` via
-`apps/web/lib/atlas-notes.ts`; KQ's via `lib/atlas/notes.ts`.)
+**This repo runs with NO inbox** — it has no `docs/atlas/notes-adapter.md`,
+and open loops go straight to `docs/docket.md`.
+
+**The storage contract is pinned, not remembered.** A repo that runs an inbox
+carries `docs/atlas/notes-adapter.md` (seed from `templates/notes-adapter.md`):
+store, columns, the canonical open-notes query, the connection route, write
+routes, freshness budget. Every sweep reads that file and runs the pinned
+query verbatim — plumbing is never re-derived, so a sweep runs cold in ~2
+minutes. When the schema moves, the contract file moves in the same commit.
+A repo with no inbox simply has no `notes-adapter.md` — its absence is the
+signal (checked by the sweep hook).
 
 The convention reserves a mutable **Todos** queue per node: raw thoughts and
 open loops, source-tagged (`manual` vs `extracted`), that are **larval
@@ -137,7 +145,8 @@ enforcement point:
    Enforced by the notes contract test (`templates/notes-contract.test.ts`),
    which skips only where the inbox is unreachable.
 2. **List-driven triage.** Resolution is never memory-scoped. The sweep
-   (hook ask + `/sweep`) QUERIES the open list and dispositions every note
+   (hook ask + `/sweep`) QUERIES the open list — via the query pinned in
+   `notes-adapter.md`, never re-derived — and dispositions every note
    anchored to a node touched since the last sweep, plus every note near or
    past budget — the session that ships a note's subject is usually not the
    session that filed it.
@@ -176,9 +185,12 @@ ask for the kit:
 9. Host-specific and optional: a renderer and a todos capture inbox behind
    an adapter (Todos section above). A repo can run with neither — open
    loops go to the docket until an inbox exists. A repo that HAS an inbox
-   also seeds the notes contract test (from
+   also seeds BOTH `docs/atlas/notes-adapter.md` (from
+   `templates/notes-adapter.md` — the pinned storage contract every sweep
+   queries by) and the notes contract test (from
    `templates/notes-contract.test.ts`) — an inbox without its freshness
-   tripwire is how 41-note middens happen.
+   tripwire is how 41-note middens happen, and one without its pinned
+   contract taxes every sweep with re-derived plumbing.
 
 Hooks and skills are byte-identical across installs by design; what localizes
 is this README's marked sections, the contract test's runner, and the

@@ -14,6 +14,13 @@ Review the whole conversation since the last sweep (hook-fired or manual) and
 work the layers in order. Each layer names its store; file to the RIGHT one —
 duplicating across stores is as bad as dropping.
 
+The sweep is a DIFF, not a re-audit: filings, resolutions, and Decisions
+appends already made during the session count — never re-file or re-confirm
+them. And it runs on a budget: the atlas layer (1) is ~2 minutes cold, end to
+end. Plumbing time — hunting for where notes live, guessing schemas,
+re-deriving connections — is failure, not thoroughness; the storage contract
+is pinned (below) precisely so none of it recurs.
+
 ## 0. One sweep at a time (the lock)
 
 Two simultaneous sweeps in one checkout write the same shared stores (docket,
@@ -44,9 +51,9 @@ The lock is released in step 5, alongside the debounce stamp.
 
 - **Open loops** — decisions pending on the owner, questions he must answer,
   ideas raised and dropped: file each to ONE store, never both.
-  Feature-anchored → the node's todo inbox as source='extracted' (the Todos
-  section of `docs/atlas/README.md` names the host's adapter). A repo with
-  no inbox files open loops to the docket instead. Cross-cutting or
+  Feature-anchored → the node's todo inbox as source='extracted', via the
+  write route pinned in `docs/atlas/notes-adapter.md`. A repo without that
+  file runs no inbox and files open loops to the docket instead. Cross-cutting or
   initiative-level → the docket "Open — Unanswered" INSTEAD, with at most a
   pointer from the note side; a note that restates a docket entry's status
   is the N-writers disease the docket rules exist to kill, and the notes
@@ -54,10 +61,15 @@ The lock is released in step 5, alongside the debounce stamp.
 - **Decisions made** — anything ruled this session that changed a feature:
   confirm the owning node's Decisions got its append (same-commit rule); a
   reframe of Why/What is a decision too (convention rule 5).
-- **Todos triage** — LIST-DRIVEN, never memory-scoped: QUERY the full open
-  list via the adapter and disposition every note that (a) anchors to a node
-  whose feature was touched since the last sweep, or (b) is near or past the
-  freshness budget (README Todos section; check `verified_at`). Disposition
+- **Todos triage** — LIST-DRIVEN, never memory-scoped: read
+  `docs/atlas/notes-adapter.md` and run its pinned open-notes query VERBATIM
+  via its named connection route — never re-derive the table, columns, or
+  connection (if the contract has drifted from reality, fixing that file is
+  itself a sweep finding, same commit as whatever moved). No
+  `notes-adapter.md` → no inbox → this bullet is a no-op. Disposition every
+  note that (a) anchors to a node whose feature was touched since the last
+  sweep, or (b) is near or past the freshness budget (pinned in the same
+  file; check `verified_at`). Disposition
   = resolve (`done` if acted on — promote the durable residue into the node;
   `good_as_is` if reviewed and nothing owed) or re-affirm against CURRENT
   evidence — read the code/doc the note makes claims about, then bump

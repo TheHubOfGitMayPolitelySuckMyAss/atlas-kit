@@ -13,9 +13,14 @@ Three rituals, one pattern — deterministic trigger, agent judgment:
   `INTERVAL_S`=45m per repo): blocks the agent's stop with exit 2 and feeds
   it the checklist — file open loops (to ONE store: node inbox or docket,
   never both), confirm same-commit Decisions appends, and triage todos
-  LIST-DRIVEN: query the full open-notes list, disposition every note on a
-  touched node or near/past the freshness budget (resolve, or re-affirm and
-  bump `verified_at`). Fires only in repos carrying `docs/atlas`. `/sweep`
+  LIST-DRIVEN: run the open-notes query pinned in the host's
+  `docs/atlas/notes-adapter.md` verbatim (the hook branches on the file's
+  existence — absent = no inbox), disposition every note on a touched node
+  or near/past the freshness budget (resolve, or re-affirm and bump
+  `verified_at`). The ask frames the sweep as a diff since the last sweep
+  (in-session filings count, never re-filed) on a ~2-minute budget —
+  plumbing time is failure, not thoroughness. Fires only in repos carrying
+  `docs/atlas`. `/sweep`
   (skill) is the on-demand superset for session close: atlas sweep + docket
   handoff + memory + repo state, with a per-repo lock so two sessions can't
   sweep the same checkout at once.
@@ -56,8 +61,28 @@ Three rituals, one pattern — deterministic trigger, agent judgment:
   docket dups when audited; the ~15 ad-hoc resolutions that did happen
   never queried the list and couldn't keep pace. (KQ session 2026-07-22)
 
+- **2026-07-23** — Sweep plumbing pinned: hosts with an inbox carry
+  `docs/atlas/notes-adapter.md` (seed `templates/notes-adapter.md`) — store,
+  columns, canonical open-notes query, connection route — and the hook names
+  it explicitly, branching on its absence (= no inbox). A contract FILE over
+  a required executable because installs route differently (Supabase MCP,
+  lib modules) and the agent is the executor; a shell entry point can't use
+  MCP tools. Enforced by a new notes-contract rule (reachable inbox ⇒ file
+  exists). The hook ask also gained diff-not-re-audit framing and a
+  ~2-minute budget. Forced by a KQ sweep burning 10+ minutes re-deriving
+  plumbing — hunted a nonexistent adapter script, guessed `node` for
+  `node_slug` — with the tax recurring every long-context sweep because
+  "adapter, not memory" pointed at nothing real. (v6)
+
 ## Graveyard
 
+- **Required executable adapter (`scripts/atlas-notes`) as the sweep's query
+  entry point** — rejected 2026-07-23 for the pinned contract file: a shell
+  script can't reach MCP-routed stores (KQ queries via Supabase MCP) and
+  duplicates credential plumbing the agent's tools already have. The
+  contract file works for every route and MAY name a script as its
+  connection route where one exists. Do not rebuild without an install a
+  declarative contract can't serve.
 - **Auto-open re-entry brief at session start** — never built, deliberately:
   a brief that fires unasked on every session is noise (most sessions aren't
   re-entries), and violates the no-surprise-surfaces instinct. Rebrief is

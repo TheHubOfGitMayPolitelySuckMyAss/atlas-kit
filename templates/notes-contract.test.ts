@@ -1,3 +1,4 @@
+import { existsSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 
 // Notes contract test — guards the todos-inbox convention (docs/atlas/README.md,
@@ -32,9 +33,24 @@ async function fetchOpenNotes(): Promise<OpenNote[] | null> {
   return null; // template stub — a fresh install with no inbox skips
 }
 
+// LOCALIZE if the repo root isn't the vitest cwd (e.g. a monorepo package).
+const ADAPTER_CONTRACT = "docs/atlas/notes-adapter.md";
+
 const notes = await fetchOpenNotes();
 
 describe.skipIf(notes === null)("atlas notes contract", () => {
+  it("the storage contract is pinned in docs/atlas/notes-adapter.md", () => {
+    // A reachable inbox without its pinned contract taxes every sweep with
+    // re-derived plumbing (table? columns? connection?) — 10+ min per sweep
+    // in the founding incident. Seed from templates/notes-adapter.md.
+    expect(
+      existsSync(ADAPTER_CONTRACT),
+      `${ADAPTER_CONTRACT} missing — the inbox is reachable but its storage ` +
+        `contract (store, columns, canonical open-notes query, connection ` +
+        `route) is not pinned; sweeps will re-derive plumbing every time`
+    ).toBe(true);
+  });
+
   it(`every open note was verified within ${BUDGET_DAYS} days`, () => {
     const cutoff = Date.now() - BUDGET_DAYS * 24 * 60 * 60 * 1000;
     const overdue = (notes ?? []).filter(

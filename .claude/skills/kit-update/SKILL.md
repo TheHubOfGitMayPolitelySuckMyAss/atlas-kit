@@ -47,6 +47,12 @@ rules silently never reached existing installs):**
   changed the CONVENTION (node format, maintenance rules, kit list), port
   those sections into the host's README while preserving its localized
   parts (Todos adapter, renderer notes, deep-dive doc links).
+- `docs/atlas/notes-adapter.md` — the host's pinned inbox storage contract
+  (added v6). If the host runs an inbox and lacks this file, seed it from
+  `templates/notes-adapter.md` and fill in the REAL contract from the host's
+  code/schema (store, columns, canonical open-notes query, connection route,
+  write routes, freshness budget) — the sweep hook queries by it. If it
+  exists, never overwrite; hosts with no inbox correctly have no file.
 - `.claude/settings.json` — only touch if the kit added/changed a hook
   entry; merge, never replace (hosts carry their own unrelated hooks).
 - Remaining templates (`templates/docket.md`, `templates/atlas-README.md`
