@@ -64,8 +64,10 @@ function walkMarkdown(dir: string): string[] {
   return out;
 }
 
+// notes-adapter.md is the pinned inbox storage contract (kit v6), convention
+// prose like the README — not a node.
 const nodeFiles = walkMarkdown(ATLAS_DIR).filter(
-  (f) => path.basename(f) !== "README.md"
+  (f) => !["README.md", "notes-adapter.md"].includes(path.basename(f))
 );
 
 describe("atlas contract", () => {

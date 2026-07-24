@@ -74,6 +74,13 @@ Three rituals, one pattern — deterministic trigger, agent judgment:
   `node_slug` — with the tax recurring every long-context sweep because
   "adapter, not memory" pointed at nothing real. (v6)
 
+- **2026-07-23** — v6 fix-up: `templates/atlas-contract.test.ts` (and
+  installs' copies) must exclude `notes-adapter.md` from node checks — it
+  is convention prose like the README, not a node. v6 forgot; the first
+  inbox-bearing install (KQ) tripped 3 node-format failures the moment the
+  contract file was seeded into `docs/atlas/`. Contributed back from the
+  KQ /kit-update session.
+
 ## Graveyard
 
 - **Required executable adapter (`scripts/atlas-notes`) as the sweep's query
