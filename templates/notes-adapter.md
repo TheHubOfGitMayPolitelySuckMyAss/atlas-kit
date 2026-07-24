@@ -2,7 +2,11 @@
      that runs a todos inbox. EVERYTHING here is LOCALIZE — the file's whole
      job is to pin THIS install's storage contract. A repo with no inbox
      does not create this file; its absence IS the no-inbox signal the
-     sweep hook checks. -->
+     sweep hook checks. NOTE: this file lives in docs/atlas/ but is
+     convention prose, NOT a node — the seeded atlas-contract test already
+     excludes it from node checks; a host with a RENDERER must skip it in
+     node parsing too (the DigiEric install's readAtlas tripped on exactly
+     this). -->
 
 # Notes adapter — the pinned storage contract
 
