@@ -116,8 +116,20 @@ On the default branch, in order:
 ## 4. Repo state
 
 - `git status` — every uncommitted change is either committed now (with its
-  same-commit atlas/docket updates) or explicitly named in the docket handoff
-  as intentionally uncommitted, with why. Nothing dangles silently.
+  same-commit atlas/docket updates) or filed as a **docket entry** with an
+  owner prefix, naming the paths and what unblocks them. Nothing dangles
+  silently.
+- **Saying it in the receipt is NOT filing it.** The receipt is chat; chat is
+  not a store. "Intentionally uncommitted" is only a real disposition when a
+  docket line exists, because the next session reads the docket and never
+  reads this conversation. A sweep once listed four dirty paths in its receipt,
+  wrote "already applied" in the docket, and declared safe-to-close; the work
+  sat uncommitted for two days and was then swept into an unrelated commit by
+  a `git add -A`. The docket said done, the tree said otherwise, and only the
+  chat knew.
+- **Do not emit the verdict over a dirty tree** unless every dirty path was
+  committed this sweep or appears in a docket entry written this sweep. Dirty
+  files with neither are an unfiled item, and the verdict rule below applies.
 - **Shared-checkout guard:** before committing a shared doc (docket, atlas
   nodes, README), `git diff` it and check whether its dirty content is YOURS.
   Another session's mid-flight edits → leave the file uncommitted and name it
