@@ -14,15 +14,6 @@ Same same-commit maintenance rule as the atlas.
   sessions on `main` in one osa-dev clone both passed the branch-only guard, and
   a contract-failing docket edit reached a production deploy (osa-dev 5627bf5,
   repaired d154faa). Design in `docs/atlas/kit/for-teams.md` §How, item 1.
-- **ON ERIC:** multi-user / "Team Atlas" — pursue the rest, and how to hand it
-  to the client? [2026-07-24] A client is about to put AI on his whole team;
-  Eric weighed sending this repo as the single-owner starting point.
-  Feasibility, the six-point architecture, and the volume risk live in the
-  parked node `docs/atlas/kit/for-teams.md` (the client's on-ramp; committed
-  2026-08-04, fold-artifact item split out above). Open on Eric: (a) send repo
-  as-is now that the map ships in it, (b) also spec/build the remaining items
-  (identity-based ask-routing, note attribution, team memory, cross-author
-  rebrief).
 - **ON ERIC:** should kit updates ask you before applying, or stay
   silent-but-committed? [2026-07-23] Raised when Eric noticed he has never
   seen the "run /kit-update" nudge — the SessionStart notice targets the
@@ -36,6 +27,14 @@ Same same-commit maintenance rule as the atlas.
 
 ## Done
 
+- **2026-08-04** — Team Atlas hand-off question (open since 2026-07-24) closed
+  by events: Eric had already sent the repo to the client — as-is, with the
+  note that the client's own Claude Code would make the small multi-user
+  changes; `for-teams.md` is their on-ramp. Remaining team items stay parked
+  in that node until an install needs them; the fold-artifact work continues
+  above (ON AGENT). Lesson: the entry outlived the real world by days and
+  cost Eric an email dig when resurfaced — a stale ON ERIC ask is a question,
+  never a reminder.
 - **2026-08-04** — Install ritual: renderer default-on for admin-surface
   hosts (`/admin/atlas`), ask only without an obvious mount point, "optional"
   reserved for nowhere-to-render hosts — v7, flowed back from the

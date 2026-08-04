@@ -66,6 +66,12 @@ throughput FIRST.
   item 1 (docket as fold artifact) is UNGATED from the team/client decision
   and filed as its own docket item. The rest of the six-point plan was
   compared against an independent derivation in the osa-dev session and held.
+- **2026-08-04** — Hand-off ruled by events: Eric had already sent this repo
+  to the client, as-is, noting their own Claude Code would make the "very
+  doable small changes" for multiple team members and sessions — this node is
+  that agent's on-ramp. The remaining team items (identity ask-routing, note
+  attribution, team memory, cross-author rebrief) stay parked here until an
+  install actually needs them. Closes the 2026-07-24 docket ask.
 
 ## Graveyard
 
