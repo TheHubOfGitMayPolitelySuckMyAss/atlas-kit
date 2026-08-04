@@ -7,6 +7,22 @@ Same same-commit maintenance rule as the atlas.
 
 ## Open — Unanswered
 
+- **ON AGENT:** build the docket fold artifact — ALL sessions (default branch
+  included) write one-note-per-file to `docs/docket-inbox/`; a fold step renders
+  `docs/docket.md`; the single-writer guard then blocks direct docket edits
+  everywhere. [2026-08-04] Ungated from the Team Atlas decision: two concurrent
+  sessions on `main` in one osa-dev clone both passed the branch-only guard, and
+  a contract-failing docket edit reached a production deploy (osa-dev 5627bf5,
+  repaired d154faa). Design in `docs/atlas/kit/for-teams.md` §How, item 1.
+- **ON ERIC:** multi-user / "Team Atlas" — pursue the rest, and how to hand it
+  to the client? [2026-07-24] A client is about to put AI on his whole team;
+  Eric weighed sending this repo as the single-owner starting point.
+  Feasibility, the six-point architecture, and the volume risk live in the
+  parked node `docs/atlas/kit/for-teams.md` (the client's on-ramp; committed
+  2026-08-04, fold-artifact item split out above). Open on Eric: (a) send repo
+  as-is now that the map ships in it, (b) also spec/build the remaining items
+  (identity-based ask-routing, note attribution, team memory, cross-author
+  rebrief).
 - **ON ERIC:** should kit updates ask you before applying, or stay
   silent-but-committed? [2026-07-23] Raised when Eric noticed he has never
   seen the "run /kit-update" nudge — the SessionStart notice targets the

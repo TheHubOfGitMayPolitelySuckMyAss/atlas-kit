@@ -12,8 +12,10 @@ across installs) plus `templates/` (install-time seeds that hosts localize).
 Two feature nodes carry the mechanics: [rituals](rituals.md) — what the
 hooks and skills do; [distribution](distribution.md) — how installs detect
 and apply updates. Current installs: DigiEric (the origin repo the kit was
-extracted from), knownquantity, and this repo itself (dogfood — the kit's
-own atlas is maintained by the kit's own sweep hook).
+extracted from), knownquantity, marcoullier-com, osa-dev, ThunderviewOS,
+and this repo itself (dogfood — the kit's own atlas is maintained by the
+kit's own sweep hook). One parked node looks ahead:
+[for-teams](for-teams.md) — the single-owner→multi-user on-ramp.
 
 ## Decisions
 
