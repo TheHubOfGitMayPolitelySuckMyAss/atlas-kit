@@ -14,11 +14,11 @@ status: parked
 ## How
 
 **Single-owner in the bones (today).** Five spots assume one person on one
-machine: (1) the docket guard keys off *branch*, not identity — three people on
-`main` in three clones diverge exactly like the 780-line worktree rot it was
-built to stop, **and this one is not team-only: it already bit solo** (osa-dev,
-2026-08-04 — two concurrent sessions on `main` in the same clone both passed
-the guard and hand-edited the docket; see Decisions); (2) the sweep locks are local-filesystem, so they mean nothing
+machine: (1) the docket guard now requires the default branch AND a
+session-keyed local write lock — the solo hole (osa-dev 2026-08-04: two
+concurrent sessions on `main` in the same clone both passed the old
+branch-only guard) is closed, but the lock is local-filesystem, so three
+people on three machines remain exposed exactly as before; (2) the sweep locks are local-filesystem, so they mean nothing
 across machines; (3) ask-routing hardcodes "ON ERIC"; (4) memory is per-user and
 local — no team layer; (5) the inbox fold is "whoever merges, by hand."
 
@@ -33,7 +33,9 @@ machinery (branches, PRs, review) instead of inventing coordination.
    `docket.md` becomes a **fold artifact** — ALL sessions (default branch
    included) write one-note-per-file to `docs/docket-inbox/`; a fold step
    renders the docket. **Ungated from the team decision** since 2026-08-04:
-   it fixes a solo-mode failure that already happened (see Decisions).
+   it fixes a solo-mode failure that already happened (see Decisions). First
+   slice (write-lock + inbox-for-everyone) built same day, kit v8; the team
+   slice — CI fold, docket as pure rendered artifact, no locks — remains.
 2. Attribution on every note/row (who + which session).
 3. `ON <name>` ask-routing resolved from git identity, not hardcoded.
 4. Delete the locks — replace with append + CI fold (see Graveyard: do NOT build
@@ -72,6 +74,13 @@ throughput FIRST.
   that agent's on-ramp. The remaining team items (identity ask-routing, note
   attribution, team memory, cross-author rebrief) stay parked here until an
   install actually needs them. Closes the 2026-07-24 docket ask.
+- **2026-08-04** — First slice built (solo scope, kit v8): the docket guard
+  now admits `docs/docket.md` edits only on the default branch AND under the
+  sweep lock, which carries the editing session's id; every other session
+  files `docs/docket-inbox/` notes, folded at the next sweep. Mechanics
+  recorded in [rituals](rituals.md) Decisions. What remains for team scale:
+  replace the local lock with a CI fold and make `docket.md` a pure rendered
+  artifact — then item 1 is done as designed.
 
 ## Graveyard
 

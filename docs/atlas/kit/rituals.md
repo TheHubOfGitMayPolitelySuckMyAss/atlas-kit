@@ -74,6 +74,17 @@ Three rituals, one pattern — deterministic trigger, agent judgment:
   `node_slug` — with the tax recurring every long-context sweep because
   "adapter, not memory" pointed at nothing real. (v6)
 
+- **2026-08-04** — Docket guard upgraded from branch-only to write-lock: a
+  `docs/docket.md` edit now requires the default branch AND holding the sweep
+  lock, which gained a session-id field (`<epoch> <sid>`; guard matches it
+  against the editing session). Every other session — same clone included —
+  files `docs/docket-inbox/` notes, folded under the lock at the next sweep.
+  Forced by osa-dev, same day: two concurrent sessions on `main` in one clone
+  both passed the branch-only guard and a contract-failing docket edit
+  reached a production deploy (osa-dev 5627bf5/d154faa). First slice of the
+  for-teams fold-artifact plan; the lock stays local-filesystem by design —
+  cross-machine is the parked team slice (`for-teams.md`). (v8)
+
 - **2026-07-23** — v6 fix-up: `templates/atlas-contract.test.ts` (and
   installs' copies) must exclude `notes-adapter.md` from node checks — it
   is convention prose like the README, not a node. v6 forgot; the first

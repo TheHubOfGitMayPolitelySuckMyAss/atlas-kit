@@ -32,12 +32,16 @@ ROOT="${CLAUDE_PROJECT_DIR:-$(git rev-parse --show-toplevel)}"
 KEY=$(echo "$ROOT" | md5 -q 2>/dev/null || echo "$ROOT" | md5sum | cut -d' ' -f1)
 LOCK="/tmp/claude-atlas-sweep-lock-$KEY"
 now=$(date +%s)
-if [ -f "$LOCK" ] && [ $((now - $(cat "$LOCK"))) -lt 1800 ]; then
-  echo "LOCKED: another sweep started $(( (now - $(cat "$LOCK")) / 60 ))m ago"
+if [ -f "$LOCK" ] && [ $((now - $(cut -d' ' -f1 "$LOCK"))) -lt 1800 ]; then
+  echo "LOCKED: another sweep started $(( (now - $(cut -d' ' -f1 "$LOCK")) / 60 ))m ago"
 else
-  echo "$now" > "$LOCK" && echo "lock acquired"
+  echo "$now ${CLAUDE_CODE_SESSION_ID:-nosession}" > "$LOCK" && echo "lock acquired"
 fi
 ```
+
+The lock file carries `<epoch> <session-id>` and doubles as the **docket
+write lock**: the guard hook admits `docs/docket.md` edits only from the
+session named in a fresh lock, on the default branch (see step 2).
 
 - **LOCKED** (fresh, <30 min): another session is mid-sweep. Stop gracefully —
   tell the owner which repo is locked and since when, do NOT proceed to any
@@ -81,12 +85,15 @@ The lock is released in step 5, alongside the debounce stamp.
 
 ## 2. Docket handoff — fold, prune, then update
 
-The docket is SINGLE-WRITER: `docs/docket.md` is edited on the default branch
-only (hook-enforced). On a branch/worktree, every docket-shaped update below
-becomes a note file in `docs/docket-inbox/<slug>.md` instead — one note per
-item: the item, its new state, its ask line, pointers.
+The docket has ONE writer at a time (hook-enforced): editing `docs/docket.md`
+requires the default branch AND the step-0 lock — the guard matches the
+lock's session id. Branch checks alone let two concurrent `main` sessions in
+one clone clobber a docket (osa-dev, 2026-08-04); the lock closes that hole.
+Any session, on any branch, can always file a docket-shaped update as a note
+file in `docs/docket-inbox/<slug>.md` instead — one note per item: the item,
+its new state, its ask line, pointers.
 
-On the default branch, in order:
+On the default branch, holding the lock, in order:
 
 - **Fold the inbox** — apply each `docs/docket-inbox/*.md` note to the
   docket, then delete the note. The inbox must be empty after a sweep.

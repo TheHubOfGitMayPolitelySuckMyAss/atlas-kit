@@ -7,13 +7,6 @@ Same same-commit maintenance rule as the atlas.
 
 ## Open — Unanswered
 
-- **ON AGENT:** build the docket fold artifact — ALL sessions (default branch
-  included) write one-note-per-file to `docs/docket-inbox/`; a fold step renders
-  `docs/docket.md`; the single-writer guard then blocks direct docket edits
-  everywhere. [2026-08-04] Ungated from the Team Atlas decision: two concurrent
-  sessions on `main` in one osa-dev clone both passed the branch-only guard, and
-  a contract-failing docket edit reached a production deploy (osa-dev 5627bf5,
-  repaired d154faa). Design in `docs/atlas/kit/for-teams.md` §How, item 1.
 - **ON ERIC:** should kit updates ask you before applying, or stay
   silent-but-committed? [2026-07-23] Raised when Eric noticed he has never
   seen the "run /kit-update" nudge — the SessionStart notice targets the
@@ -27,6 +20,12 @@ Same same-commit maintenance rule as the atlas.
 
 ## Done
 
+- **2026-08-04** — Docket write-lock shipped (v8): editing `docs/docket.md`
+  now requires the default branch AND the sweep lock, which carries the
+  editing session's id; every other session — same clone included — files
+  `docs/docket-inbox/` notes, folded at the next sweep. Closes the solo hole
+  osa-dev hit this morning (5627bf5/d154faa); the cross-machine/CI-fold team
+  slice stays parked in `for-teams.md`.
 - **2026-08-04** — Team Atlas hand-off question (open since 2026-07-24) closed
   by events: Eric had already sent the repo to the client — as-is, with the
   note that the client's own Claude Code would make the small multi-user
