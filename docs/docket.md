@@ -36,6 +36,10 @@ Same same-commit maintenance rule as the atlas.
 
 ## Done
 
+- **2026-08-04** — Install ritual: renderer default-on for admin-surface
+  hosts (`/admin/atlas`), ask only without an obvious mount point, "optional"
+  reserved for nowhere-to-render hosts — v7, flowed back from the
+  ThunderviewOS install (its own renderer port happens on that side).
 - **2026-07-18** — MIT LICENSE added on Eric's ask, same day the repo went
   public — closes the no-license loop; anyone now has a formal grant to
   use/copy/modify. Going public also closed the private-repo auth loop:

@@ -45,6 +45,14 @@ files, so a kit regression can't propagate unreviewed.
 - **2026-07-18** — MIT license added (Eric's ask, hours after going
   public): full open posture on the grant. What remains deliberately
   unpromised: issues triage, contribution review, any support expectation.
+- **2026-08-04** — Install ritual: renderer flipped to DEFAULT-ON for hosts
+  with an authenticated admin surface, mounted at `/admin/atlas`; the agent
+  asks only when there is no obvious mount point, and "optional" is reserved
+  for hosts with nowhere to render (CLIs, libraries). Flowed back from the
+  ThunderviewOS install: the "host-specific and optional" bucket let the
+  installing agent skip the renderer, and Eric's first post-install question
+  was the atlas URL — the revealed default is renderer-on for web apps
+  (marcoullier-com and knownquantity both mount `/admin/atlas`). (v7)
 
 ## Graveyard
 

@@ -27,7 +27,12 @@ The ritual (kit list in `docs/atlas/README.md`, "The kit" section):
 3. Write `.claude/atlas-kit.json`:
    `{"origin": "<this repo's git URL>", "sha": "<HEAD at install>", "installed": "<date>"}`.
 4. Optionally seed the CI contract from `templates/atlas-contract.test.ts`.
-5. Mine the codebase for the first domain nodes; if the project was born
+5. Renderer — DEFAULT-ON for hosts with an authenticated admin surface:
+   port it from an existing install and mount it at `/admin/atlas` (the
+   cross-install convention). Ask the owner at install time only when there
+   is no obvious mount point; skip it only where there is nowhere to render
+   (CLIs, libraries).
+6. Mine the codebase for the first domain nodes; if the project was born
    inside another repo's sessions, mine THAT repo for the incubation
    decision history — "born elsewhere" is a mining problem, not an
    accepted loss.
