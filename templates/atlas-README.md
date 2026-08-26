@@ -135,6 +135,40 @@ to 780 lines of shipped-but-still-In-Flight entries):
 All four are enforced by the docket contract test (seed from
 `templates/docket-contract.test.ts`, sibling of the atlas contract test).
 
+## Open loops — how to ask
+
+A sweep does **not** file open loops on its own judgment. It shows the owner
+the candidates, he rules, and only what he keeps gets written. A **null answer
+means drop it** — not file it anyway.
+
+The reason is asymmetry: filing is permanent, and most "open loops" are
+questions the *agent* raised, not decisions the owner owes anyone. A null
+filed anyway becomes an entry he will never remember the context for, and it
+resurfaces in every later sweep as if it were live work. The inverse is
+equally true — an agent that buries important things in walls of text is not
+fixed by silently dropping them. He sees everything; he decides what persists.
+
+**If he is not present** (unattended run, cron, no reply): file nothing that
+turns on his judgment. Carry the candidates to the next sweep and ask again.
+Only a verified fact with no decision attached may be filed unattended.
+
+### The three-part shape
+
+Every candidate is asked in exactly this shape. Plain words, short sentences,
+no file paths, no function names, no jargon — **a question the owner cannot
+parse is a question he cannot answer**, and most owners are not developers.
+
+1. **The question.** One sentence. A non-developer can answer it as written.
+2. **Why it matters.** Exactly one of *"this affects you today"* or *"this
+   will affect you later."* Nothing else goes here. If neither is true, the
+   candidate is not worth his attention — drop it.
+3. **The tradeoff.** What each way actually costs him, concretely. Not
+   "there are pros and cons" — the real cost of each choice.
+
+If a candidate cannot be written this way, that is the signal it is an
+implementation detail and belongs in the node's How section or the code, not
+in front of him.
+
 ## Todos — the capture inbox (pluggable)
 
 **The storage contract is pinned, not remembered.** A repo that runs an inbox

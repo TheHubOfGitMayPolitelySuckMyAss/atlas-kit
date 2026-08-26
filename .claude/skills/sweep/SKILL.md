@@ -54,7 +54,16 @@ The lock is released in step 5, alongside the debounce stamp.
 ## 1. Atlas sweep (same checklist the hook fires)
 
 - **Open loops** — decisions pending on the owner, questions he must answer,
-  ideas raised and dropped: file each to ONE store, never both.
+  ideas raised and dropped. **ASK FIRST, FILE AFTER**: list the candidates in
+  chat, let him rule, and write ONLY what he keeps. A **null answer means drop
+  it**, not file-it-anyway — most open loops are questions the AGENT raised,
+  and filing a null makes a permanent entry nobody will remember the context
+  for. If he is not present to answer, file nothing that turns on his
+  judgment: carry the candidates to the next sweep, and file only verified
+  facts with no decision attached. Ask in the three-part shape the README
+  pins ("Open loops — how to ask") — the question, why it matters, the
+  tradeoff — in plain words a non-developer can answer.
+  What he keeps goes to ONE store, never both.
   Feature-anchored → the node's todo inbox as source='extracted', via the
   write route pinned in `docs/atlas/notes-adapter.md`. A repo without that
   file runs no inbox and files open loops to the docket instead. Cross-cutting or
