@@ -4,8 +4,8 @@
 # doc at all"). The hook owns the ASK; the agent keeps the judgment.
 #
 # Fires at most once per INTERVAL of activity, per repo PER SESSION, only in
-# repos that carry an atlas. exit 2 re-wakes the agent with the sweep
-# checklist; the debounce stamp prevents a refire on the post-sweep stop.
+# repos that carry an atlas. The checklist goes back as Stop
+# additionalContext, which re-wakes the agent; the debounce stamp prevents a refire on the post-sweep stop.
 # First stop of a fresh window initializes the stamp silently so sessions
 # don't open with a sweep of nothing.
 #
@@ -42,11 +42,23 @@ else
   TODOS='3. TODOS — no docs/atlas/notes-adapter.md, so this repo runs no inbox: open loops from step 1 go to the docket. If an inbox DOES exist here, the missing contract file is the finding — seed it from the kit'"'"'s templates/notes-adapter.md.'
 fi
 
-cat >&2 <<MSG
+SWEEP=$(cat <<MSG
 ATLAS SWEEP (debounced ~45m): review the conversation SINCE THE LAST SWEEP — a diff, not a re-audit: filings and resolutions already made during the session count; never re-file them. Budget ~2 minutes end to end — if plumbing (finding the store, connecting, querying) is eating the budget, that is a failure to report, not thoroughness.
 1. OPEN LOOPS — do NOT file these on your own judgment. ASK FIRST, FILE AFTER. List the candidates in chat, let the owner rule, and write ONLY what he keeps — feature-anchored to the node's inbox (source='extracted'), cross-cutting to docs/docket.md "Open — Unanswered" INSTEAD; never both, never restate docket status in a note. A NULL ANSWER MEANS DROP IT, not file-it-anyway — most open loops are questions the AGENT raised, and filing a null makes a permanent entry nobody will remember the context for. If the owner is not present to answer (unattended or cron run), file nothing that turns on his judgment — carry the candidates to the next sweep; only verified facts with no decision attached may be filed unattended. ASK IN THIS SHAPE, every time, plain words and short sentences — no file paths, no function names, no jargon: (a) THE QUESTION, in one sentence a non-developer can answer. (b) WHY IT MATTERS — exactly one of "this affects you today" or "this will affect you later", and nothing else. (c) THE TRADEOFF — what each way actually costs him, concretely. Full spec: docs/atlas/README.md, "Open loops — how to ask".
 2. DECISIONS MADE — anything ruled this session that changed a feature: confirm the owning node's Decisions got its append (same-commit rule).
 $TODOS
 If nothing needs filing, continue with one line: "Atlas sweep: clear."
 MSG
-exit 2
+)
+
+# Delivered as Stop additionalContext with exit 0, not stderr + exit 2: Claude
+# Code labels an exit-2 message "Stop hook error", and teammates read that as
+# a failure (osa-dev #159, 2026-10-08). additionalContext shows as "Stop hook
+# feedback" and still continues the conversation (Claude Code 2.1.295 schema).
+esc=${SWEEP//\\/\\\\}
+esc=${esc//\"/\\\"}
+esc=${esc//$'\n'/\\n}
+esc=${esc//$'\t'/\\t}
+esc=${esc//$'\r'/}
+printf '{"hookSpecificOutput":{"hookEventName":"Stop","additionalContext":"%s"}}\n' "$esc"
+exit 0

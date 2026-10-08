@@ -10,8 +10,8 @@ status: live
 Three rituals, one pattern — deterministic trigger, agent judgment:
 
 - **Sweep** (`hooks/atlas-open-loop-sweep.sh`, Stop hook, debounced
-  `INTERVAL_S`=45m per repo): blocks the agent's stop with exit 2 and feeds
-  it the checklist — file open loops (to ONE store: node inbox or docket,
+  `INTERVAL_S`=45m per repo): returns the checklist as Stop
+  `additionalContext` (exit 0), which continues the agent and feeds it — file open loops (to ONE store: node inbox or docket,
   never both), confirm same-commit Decisions appends, and triage todos
   LIST-DRIVEN: run the open-notes query pinned in the host's
   `docs/atlas/notes-adapter.md` verbatim (the hook branches on the file's
@@ -91,6 +91,15 @@ Three rituals, one pattern — deterministic trigger, agent judgment:
   inbox-bearing install (KQ) tripped 3 node-format failures the moment the
   contract file was seeded into `docs/atlas/`. Contributed back from the
   KQ /kit-update session.
+
+- **2026-10-08** — Sweep delivery moved from stderr + exit 2 to Stop
+  `hookSpecificOutput.additionalContext` + exit 0. Claude Code labels an
+  exit-2 message "Stop hook error"; a teammate on osa-dev read the sweep as
+  a failure. `additionalContext` renders as "Stop hook feedback" and still
+  continues the agent (verified in Claude Code 2.1.295: the schema says so,
+  and a live `claude -p` run acted on it). Cost: a Claude Code old enough
+  not to know this field drops the sweep silently instead of showing it.
+  (osa-dev #159, v10)
 
 ## Graveyard
 
