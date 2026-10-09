@@ -114,6 +114,11 @@ sneaks in — trim to the principle or date the quote.
    audit found 3 of 17 owner-attributions had no receipt — one doctrine the
    owner never stated wore his name for days.
 
+### Open work <!-- LOCALIZE: where this install keeps open work — "work" in
+     .claude/atlas-kit.json. A TICKET install replaces this section with one
+     paragraph naming its ticket system and the doc that defines the flow
+     ("ticketRitual"), and drops the docket rules below. -->
+
 The open work docket is the atlas's sibling: `docs/docket.md` — three states
 (In Flight / Open–Unanswered / Done), same same-commit maintenance rule, plus
 four rules of its own (it is STATE, not a log — learned when a docket rotted
@@ -232,11 +237,13 @@ kit:
 1. `docs/atlas/README.md` — this convention (instantiated from
    `templates/atlas-README.md`; LOCALIZE-marked sections adapted). The only
    required reading.
-2. `docs/docket.md` — seeded with the three empty states (from
+2. **Docket installs** (`"work": "docket"`): `docs/docket.md` — seeded with the three empty states (from
    `templates/docket.md`, which carries the four docket rules), plus
    `.claude/hooks/docket-single-writer.sh` + its PreToolUse entry in
    `.claude/settings.json` (the single-writer guard) and a docket contract
-   test (seed from `templates/docket-contract.test.ts`).
+   test (seed from `templates/docket-contract.test.ts`). **Ticket installs**
+   (`"work": "tickets"`) skip all of it: their open work is the host's ticket
+   system, and the portable files branch on the setting.
 3. `.claude/hooks/atlas-open-loop-sweep.sh` + its Stop entry in
    `.claude/settings.json` — the debounced periodic sweep ask.
 4. `.claude/skills/sweep/SKILL.md` — `/sweep`, the on-demand session-close

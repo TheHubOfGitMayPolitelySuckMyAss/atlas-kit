@@ -19,19 +19,34 @@ installed SHA is too old for the shallow history, deepen or note it).
 
 ## 2. Apply — three classes of file, three rules
 
+**First, read this install's open-work mode** (v11): `"work"` in
+`.claude/atlas-kit.json`, `"docket"` or `"tickets"`. Unset → infer it
+(`docs/docket.md` present = `docket`, absent = `tickets`) and WRITE the
+inferred value into the stamp in step 3, so the mode is explicit from then
+on. Ticket installs also keep (or gain) `"ticketRitual"`: the path of the
+host doc that defines its ticket flow. The portable files below branch on
+this setting, so they copy byte-identical into BOTH kinds of install —
+never hand-edit a portable file to fit a mode. That is the trap v11 closed:
+osa-dev rewrote three portable files for tickets, and every update would
+have reverted them (osa-dev #164).
+
 **Byte-identical (copy verbatim, then diff to confirm what changed):**
 - `.claude/hooks/atlas-open-loop-sweep.sh`
 - `.claude/hooks/atlas-kit-update-check.sh`
 - `.claude/hooks/docket-single-writer.sh` (+ its PreToolUse Edit|Write entry
-  in `.claude/settings.json` — merge rule below)
+  in `.claude/settings.json` — merge rule below) — **docket installs only.**
+  A ticket install never gets it. If one still carries a copy from before
+  its switch, remove the file and its settings entry, and name that in the
+  report.
 - `.claude/skills/sweep/SKILL.md`
 - `.claude/skills/rebrief/SKILL.md`
 - `.claude/skills/kit-update/SKILL.md` (this file — yes, it updates itself)
 
 **Contract tests (reviewed-merge on update — added v5; before this, test
 rules silently never reached existing installs):**
-- `templates/atlas-contract.test.ts`, `templates/docket-contract.test.ts`,
-  `templates/notes-contract.test.ts` → the host's test dir (whatever the
+- `templates/atlas-contract.test.ts`, `templates/docket-contract.test.ts`
+  (docket installs only), `templates/notes-contract.test.ts` → the host's
+  test dir (whatever the
   host named them). Port new/changed RULES into the host's copy; preserve
   host localizations (`OWNER_NAME`, paths, LOCALIZE-marked blocks, rules
   the host added). If the host lacks a copy, install it and localize.
@@ -60,7 +75,8 @@ rules silently never reached existing installs):**
 
 ## 3. Stamp, commit, report
 
-- Update `.claude/atlas-kit.json`: new `sha`, `updated` date.
+- Update `.claude/atlas-kit.json`: new `sha`, `updated` date, and `work`
+  (plus `ticketRitual` for ticket installs) — keep every other key.
 - Commit with EXPLICIT paths (never `git add -A`), message
   `chore(atlas-kit): update to <sha7> — <one-line summary of what changed>`.
 - If `.claude/settings.json` changed, tell the owner: running sessions need

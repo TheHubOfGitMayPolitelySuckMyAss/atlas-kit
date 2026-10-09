@@ -2,7 +2,8 @@
 
 The canonical origin for the **atlas** — a convention + toolkit that keeps
 AI-built projects bounded and remembered: a fractal living map of every
-feature (why / what / how / decisions / graveyard), an open-work docket, and
+feature (why / what / how / decisions / graveyard), an open-work store (the
+kit's docket, or the host's own ticket system), and
 the agent rituals that maintain both automatically.
 
 Born in [DigiEric] 2026-07-15, ported to a second consumer 2026-07-17,
@@ -18,14 +19,16 @@ Point a Claude Code session at the target repo and say:
 
 The ritual (kit list in `docs/atlas/README.md`, "The kit" section):
 
-1. Copy `.claude/hooks/*` and `.claude/skills/{sweep,rebrief,kit-update}`
-   byte-identical; merge the Stop + SessionStart hook entries into the
+1. Copy `.claude/hooks/*` (the docket guard only for docket installs) and
+   `.claude/skills/{sweep,rebrief,kit-update}` byte-identical; merge the Stop + SessionStart hook entries into the
    host's `.claude/settings.json`.
 2. Instantiate `templates/atlas-README.md` → `docs/atlas/README.md`
-   (adapt the LOCALIZE-marked sections) and `templates/docket.md` →
-   `docs/docket.md`.
+   (adapt the LOCALIZE-marked sections). Docket installs also instantiate
+   `templates/docket.md` → `docs/docket.md` and take the docket guard;
+   ticket installs (the host already runs a ticket system) skip both.
 3. Write `.claude/atlas-kit.json`:
-   `{"origin": "<this repo's git URL>", "sha": "<HEAD at install>", "installed": "<date>"}`.
+   `{"origin": "<this repo's git URL>", "sha": "<HEAD at install>", "installed": "<date>", "work": "docket"}`
+   — or `"work": "tickets", "ticketRitual": "<path to the host's ticket-flow doc>"`.
 4. Optionally seed the CI contract from `templates/atlas-contract.test.ts`.
 5. Renderer — DEFAULT-ON for hosts with an authenticated admin surface:
    port it from an existing install and mount it at `/admin/atlas` (the

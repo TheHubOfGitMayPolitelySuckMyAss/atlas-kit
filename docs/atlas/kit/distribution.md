@@ -8,7 +8,9 @@ status: live
 ## How
 
 An install is stamped by `.claude/atlas-kit.json` — `{origin, sha,
-installed/updated}`. Three moving parts:
+installed/updated, work, ticketRitual?}`. `work` is the install's open-work
+store, `"docket"` or `"tickets"` (v11); the portable files branch on it, so
+they stay byte-identical across both kinds of install. Three moving parts:
 
 - **Detect** (`hooks/atlas-kit-update-check.sh`, SessionStart, debounced
   24h per repo): `git ls-remote <origin> HEAD` vs the stamped SHA — no
@@ -17,7 +19,7 @@ installed/updated}`. Three moving parts:
   "kit update available, run /kit-update".
 - **Apply** (`skills/kit-update`): shallow-clone origin to scratch, copy
   the portable files byte-identical (three hooks, three skills — including
-  itself), reconcile localized files by judgment (host atlas README,
+  itself; the docket guard only where `work` is `docket`), reconcile localized files by judgment (host atlas README,
   settings.json merges), advance the stamp, one explicit-paths commit.
 - **Contribute back**: a local improvement to a portable file goes to the
   origin repo (whose own atlas records the decision), then reaches every
@@ -53,6 +55,22 @@ files, so a kit regression can't propagate unreviewed.
   installing agent skip the renderer, and Eric's first post-install question
   was the atlas URL — the revealed default is renderer-on for web apps
   (marcoullier-com and knownquantity both mount `/admin/atlas`). (v7)
+
+- **2026-10-08** — Open-work store became a per-install SETTING (`work` in
+  `.claude/atlas-kit.json`: `docket` | `tickets`, inferred from
+  `docs/docket.md` when unset; `ticketRitual` names a ticket host's flow
+  doc). The sweep hook, `/sweep` and `/rebrief` carry both wordings and
+  branch on it; `/kit-update` installs the docket guard only for docket
+  installs, and the guard itself goes inert under `tickets`. Forced by
+  osa-dev, which moved to GitHub tickets 2026-10-05 by hand-editing three
+  portable files: every `/kit-update` would have reverted them and
+  reinstalled the docket guard (osa-dev #164; the v10 push surfaced it).
+  Docket-mode hook output is byte-identical to v10, verified by diff.
+  Upstreamed in the same change: osa-dev's worktree-safe sweep lock (keyed
+  on the repo's shared root, osa-dev #30), with the docket guard keyed the
+  same way; identical to before for any checkout that isn't a worktree.
+  Eric's ruling, in chat: fix it in the kit first, then osa-dev takes a
+  normal update. Setting name and shape are the builder's choice. (v11)
 
 ## Graveyard
 

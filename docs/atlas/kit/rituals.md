@@ -11,7 +11,7 @@ Three rituals, one pattern — deterministic trigger, agent judgment:
 
 - **Sweep** (`hooks/atlas-open-loop-sweep.sh`, Stop hook, debounced
   `INTERVAL_S`=45m per repo): returns the checklist as Stop
-  `additionalContext` (exit 0), which continues the agent and feeds it — file open loops (to ONE store: node inbox or docket,
+  `additionalContext` (exit 0), which continues the agent and feeds it — file open loops (to ONE store: node inbox or the install's open-work store — docket or tickets, per `work`,
   never both), confirm same-commit Decisions appends, and triage todos
   LIST-DRIVEN: run the open-notes query pinned in the host's
   `docs/atlas/notes-adapter.md` verbatim (the hook branches on the file's

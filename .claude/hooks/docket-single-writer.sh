@@ -39,7 +39,19 @@ DEFAULT=$(git -C "$DIR" symbolic-ref --short refs/remotes/origin/HEAD 2>/dev/nul
 DEFAULT="${DEFAULT:-main}"
 
 ROOT=$(git -C "$DIR" rev-parse --show-toplevel 2>/dev/null || echo "$DIR")
-KEY=$(echo "$ROOT" | md5 -q 2>/dev/null || echo "$ROOT" | md5sum | cut -d' ' -f1)
+
+# Ticket installs run no docket (v11, "work" in .claude/atlas-kit.json); the
+# kit doesn't install this guard there, and a leftover copy stays inert.
+WORK=$(sed -n 's/.*"work"[[:space:]]*:[[:space:]]*"\([a-z]*\)".*/\1/p' "$ROOT/.claude/atlas-kit.json" 2>/dev/null | head -1)
+[ "$WORK" = "tickets" ] && exit 0
+
+# The lock is keyed on the repo's SHARED root (sweep skill step 0, v11), so a
+# worktree and the main checkout contend for one lock. --git-common-dir is
+# absolute in a worktree and relative in a main checkout, hence the cd.
+GITDIR=$(git -C "$DIR" rev-parse --git-common-dir 2>/dev/null)
+SHARED_ROOT=$(cd "$DIR" && cd "$GITDIR/.." 2>/dev/null && pwd)
+SHARED_ROOT="${SHARED_ROOT:-$ROOT}"
+KEY=$(echo "$SHARED_ROOT" | md5 -q 2>/dev/null || echo "$SHARED_ROOT" | md5sum | cut -d' ' -f1)
 LOCK="/tmp/claude-atlas-sweep-lock-$KEY"
 
 now=$(date +%s)

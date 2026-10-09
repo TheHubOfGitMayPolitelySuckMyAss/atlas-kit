@@ -14,8 +14,11 @@ every fact in it is right.
 ## 1. Resolve the topic
 
 Match the request against, in order: atlas node filenames + titles
-(`docs/atlas/*/*.md`), docket entries (`docs/docket.md`), memory topic
-files. Best match wins — NAME it in the brief's first line so a wrong guess
+(`docs/atlas/*/*.md`), open work, memory topic files. Open work is
+wherever this install keeps it — `"work"` in `.claude/atlas-kit.json`
+(unset: `docs/docket.md` present = docket, absent = tickets): docket
+entries in `docs/docket.md`, or open ticket titles + labels in the host's
+ticket system (`"ticketRitual"` names the doc that defines it). Best match wins — NAME it in the brief's first line so a wrong guess
 costs the owner one redirect message. NEVER an interactive picker. If
 nothing matches, say so in one line and list the three nearest nodes.
 
@@ -27,10 +30,16 @@ each owning node, still one brief.
 - **Node(s):** Why/What for orientation, the last ~5 Decisions entries, a
   Graveyard skim (so the brief can warn "we already tried X"). If the node
   links a deep-dive doc, read its tail.
-- **Inbox:** open `atlas_notes` rows for the slug(s) — the host's Todos
-  adapter is named in `docs/atlas/README.md`. Repo with no inbox: skip.
-- **Docket:** In Flight + Open lines mentioning the topic, including any
-  handoff notes from `/sweep`.
+- **Inbox:** open notes for the slug(s) — the host's Todos adapter is
+  named in `docs/atlas/README.md`. Repo with no inbox: skip.
+- **Open work**, by mode:
+  - **docket** — In Flight + Open lines mentioning the topic, including any
+    handoff notes from `/sweep`.
+  - **tickets** — open tickets matching the topic (search, then read each
+    hit with its comments): state, assignee, linked PR/branch, and the
+    LATEST comments. Sweep handoffs land as ticket comments, so the tail
+    comment is usually the freshest "where it stands." A closed ticket's
+    body is the receipt for what shipped.
 - **Git:** commits touching the feature's code paths since the owner last
   worked it (the node's SHA anchors date the last touch). Anything that
   changed behavior but isn't reflected in the node is **drift** — flag it.
@@ -44,7 +53,10 @@ One screen, ~150 words max, no preamble, omit any empty section:
 - **First move:** THE single most productive next action, concrete enough
   to start typing. This is the payload; everything else is justification.
 - **Where you left off:** last shipped thing (SHA + date) and last ruling.
-- **Open on you:** questions waiting on the owner — max 3, one line each.
+- **Open on you:** what waits on the owner — questions waiting on them,
+  and in ticket installs the open tickets assigned to them plus unanswered
+  questions in ticket comments — max 3, one line each, ticket numbers
+  named.
 - **Changed while away:** commits/drift since the pause — only if real.
 - **Graveyard warning:** one line, only if the likely path was already
   tried and buried.
@@ -54,6 +66,8 @@ full frame. Never pad a short answer to fill the format.
 
 ## 4. Read-only ritual
 
-A rebrief never fixes, files, or commits anything — it is the ramp, not the
-work. One exception: drift found in step 2 is named in the brief; offer to
-file or fix it as the follow-up, after the owner is moving.
+A rebrief never fixes, files, or commits anything — no docket edits, no
+tickets, no comments; it is the ramp, not the work. One exception: drift
+found in step 2 is named in the brief; offer to file or fix it as the
+follow-up (in ticket installs, through the candidate-ticket ritual), after
+the owner is moving.
